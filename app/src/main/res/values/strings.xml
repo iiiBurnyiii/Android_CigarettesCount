@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Cigarettes Count</string>
+    <string name="title_activity_history">История</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="tab_history_1">Сигареты</string>
+    <string name="tab_history_2">Пачки</string>
+
+    <string name="action_settings">Настройки</string>
+    <string name="section_format">%l$d</string>
+
+    <string name="add_widget">Add widget</string>
+
+    <string name="count_text">0</string>
+    <string name="main_title_count">Че сколько выкурил, братишь?</string>
+
+    <string name="main_pack_name">Марка</string>
+    <string name="main_pack_price">Цена</string>
+    <string name="main_title_pack">Что купил?</string>
+
+    <string name="add_pack">Добавить</string>
+    <string name="statistic">Статистика</string>
+    <string name="methods">Методы</string>
+
+    <string name="menu_history_1">Удалить всю историю</string>
+
+    <string name="context_menu_history_1">Edit item</string>
+    <string name="context_menu_history_2">Delete item</string>
+    <string name="context_menu_history_3">Select All</string>
+</resources>

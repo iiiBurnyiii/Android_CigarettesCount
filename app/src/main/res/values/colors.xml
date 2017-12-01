@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4b4b4b</color>
+    <color name="colorPrimaryDark">#2b2b2b</color>
+    <color name="colorAccent">#8b0b0b</color>
+    <color name="white">#FFFF</color>
+    <color name="material_grey">#ffe0e0e0</color>
+    <color name="lvMultipleSelectionColor">#D3D3D3</color>
+</resources>
