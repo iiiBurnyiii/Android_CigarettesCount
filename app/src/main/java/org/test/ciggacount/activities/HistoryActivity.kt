@@ -9,9 +9,9 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_history.*
 import org.jetbrains.anko.db.*
 import org.jetbrains.anko.toast
-import org.test.ciggacount.DatabaseHelper
 import org.test.ciggacount.R
 import org.test.ciggacount.adapters.SectionsPagerAdapter
+import org.test.ciggacount.utils.DatabaseHelper
 
 class HistoryActivity : AppCompatActivity() {
 

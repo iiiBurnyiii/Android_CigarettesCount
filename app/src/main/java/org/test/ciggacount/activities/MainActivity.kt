@@ -18,8 +18,9 @@ import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
-import org.test.ciggacount.DatabaseHelper
 import org.test.ciggacount.R
+import org.test.ciggacount.utils.DatabaseHelper
+import org.test.ciggacount.utils.MySharedPreferences
 import org.test.ciggacount.widget.CigaretteWidget
 import java.text.DateFormat
 import java.util.*
@@ -27,7 +28,6 @@ import java.util.*
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
-        val WIDGET_PREF = "widget_pref"
 
         var count = 0
 
@@ -47,6 +47,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val Context.database : DatabaseHelper
         get() = DatabaseHelper.getInstance(applicationContext)
 
+    private val sp = MySharedPreferences(this)
+
     private val onClick = View.OnClickListener {view ->
         checkDayAndUpdDb()
 
@@ -59,8 +61,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-        setPref("count", count)
-        tvCount.text = getPref("count")
+        sp.setPref("count", count)
+        tvCount.text = sp.getPref("count")
 
         updateWidgets()
     }
@@ -95,10 +97,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onResume() {
-        if (getPref("count") == "") setPref("count", 0)
-
-        count = getPref("count").toInt()
-        tvCount.text = getPref("count")
+        count = sp.getPref("count").toInt()
+        tvCount.text = sp.getPref("count")
 
         super.onResume()
     }
@@ -125,28 +125,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    fun checkDayAndUpdDb() {
+    private fun checkDayAndUpdDb() {
         curDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
 
-        if (curDay.toString() != getPref("day")) {
+        if (curDay.toString() != sp.getPref("day")) {
             databaseInsertCount()
         }
     }
-
-
-    private fun setPref(key: String, value: Any?) {
-        getSharedPreferences(WIDGET_PREF, Context.MODE_PRIVATE)
-                .edit()
-                .putString(key, value.toString())
-                .apply()
-
-    }
-
-    private fun getPref(key: String): String {
-        return getSharedPreferences(WIDGET_PREF, Context.MODE_PRIVATE)
-                .getString(key, "")
-    }
-
 
     private fun updateWidgets() {
         val widgetManager = AppWidgetManager.getInstance(this)
@@ -184,15 +169,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         database.use {
             insert("Counter",
-                    "count" to getPref("count").toInt(),
+                    "count" to sp.getPref("count").toInt(),
                     "date" to date)
         }
 
-        setPref("day", curDay)
+        sp.setPref("day", curDay)
 
         count = 0
-        setPref("count", count)
-        tvCount.text = getPref("count")
+        sp.setPref("count", count)
+        tvCount.text = sp.getPref("count")
     }
 
 

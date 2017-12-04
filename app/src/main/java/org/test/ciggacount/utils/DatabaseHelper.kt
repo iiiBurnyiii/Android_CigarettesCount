@@ -1,4 +1,4 @@
-package org.test.ciggacount
+package org.test.ciggacount.utils
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

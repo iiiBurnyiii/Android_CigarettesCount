@@ -5,15 +5,15 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.widget.RemoteViews
 import org.test.ciggacount.R
 import org.test.ciggacount.activities.MainActivity
+import org.test.ciggacount.utils.MySharedPreferences
 
 class CigaretteWidget : AppWidgetProvider() {
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        val sp = context.getSharedPreferences("widget_pref", Context.MODE_PRIVATE)
+        val sp = MySharedPreferences(context)
 
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId, sp)
@@ -24,6 +24,7 @@ class CigaretteWidget : AppWidgetProvider() {
         super.onReceive(context, intent)
 
         if (intent.action == ACTION_PLUS || intent.action == ACTION_SUB) {
+
             var mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
             val extras = intent.extras
@@ -34,15 +35,14 @@ class CigaretteWidget : AppWidgetProvider() {
                 )
             }
             if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-
-                val sp = context.getSharedPreferences(MainActivity.WIDGET_PREF, Context.MODE_PRIVATE)
+                val sp = MySharedPreferences(context)
 
                 val count = when (intent.action) {
-                    ACTION_PLUS -> sp.getString("count", "0").toInt() + 1
-                    ACTION_SUB -> MainActivity.subCount(sp.getString("count", "0").toInt())
-                    else -> sp.getString("count", "0").toInt()
+                    ACTION_PLUS -> sp.getPref("count").toInt() + 1
+                    ACTION_SUB -> MainActivity.subCount(sp.getPref("count").toInt())
+                    else -> sp.getPref("count").toInt()
                 }
-                sp.edit().putString("count", count.toString()).apply()
+                sp.setPref("count", count)
 
                 updateAppWidget(context, AppWidgetManager.getInstance(context), mAppWidgetId, sp)
             }
@@ -61,19 +61,22 @@ class CigaretteWidget : AppWidgetProvider() {
         private val ACTION_SUB = "org.test.ciggacount.count_sub"
 
         internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager,
-                                     appWidgetId: Int, sp: SharedPreferences) {
+                                     appWidgetId: Int, sp: MySharedPreferences) {
 
-            val widgetText: String = sp.getString("count", "0")
+            val widgetText: String = sp.getPref("count")
 
             val views = RemoteViews(context.packageName, R.layout.cigarette_widget)
             views.setTextViewText(R.id.appwidget_text, widgetText)
 
+            val activityIntent = Intent(context, MainActivity::class.java)
+            var pIntent = PendingIntent.getActivity(context, appWidgetId, activityIntent, 0)
+            views.setOnClickPendingIntent(R.id.appwidget_text, pIntent)
 
             val plusIntent = with (Intent(context, CigaretteWidget::class.java)) {
                 action = ACTION_PLUS
                 putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
             }
-            var pIntent = PendingIntent.getBroadcast(context, appWidgetId, plusIntent, 0)
+            pIntent = PendingIntent.getBroadcast(context, appWidgetId, plusIntent, 0)
             views.setOnClickPendingIntent(R.id.wBtnPlus, pIntent)
 
             val subIntent = with (Intent(context, CigaretteWidget::class.java)) {
