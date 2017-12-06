@@ -25,7 +25,8 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="60dp"
         android:layout_toEndOf="@+id/appwidget_text"
-        android:background="@mipmap/right_arrow" />
+        android:background="@mipmap/right_arrow"
+        android:backgroundTint="@color/colorPrimary" />
 
     <Button
         android:id="@+id/wBtnSub"
@@ -35,6 +36,7 @@
         android:layout_alignBottom="@+id/appwidget_text"
         android:layout_marginEnd="60dp"
         android:layout_toStartOf="@+id/appwidget_text"
-        android:background="@mipmap/left_arrow" />
+        android:background="@mipmap/left_arrow"
+        android:backgroundTint="@color/colorPrimary" />
 
 </RelativeLayout>

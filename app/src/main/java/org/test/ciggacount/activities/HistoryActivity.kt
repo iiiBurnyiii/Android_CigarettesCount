@@ -1,6 +1,5 @@
 package org.test.ciggacount.activities
 
-import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v7.app.AppCompatActivity
@@ -11,12 +10,9 @@ import org.jetbrains.anko.db.*
 import org.jetbrains.anko.toast
 import org.test.ciggacount.R
 import org.test.ciggacount.adapters.SectionsPagerAdapter
-import org.test.ciggacount.utils.DatabaseHelper
+import org.test.ciggacount.utils.database
 
 class HistoryActivity : AppCompatActivity() {
-
-    private val Context.database : DatabaseHelper
-        get() = DatabaseHelper.getInstance(applicationContext)
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
 

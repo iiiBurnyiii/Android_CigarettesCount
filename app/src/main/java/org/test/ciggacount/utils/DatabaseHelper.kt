@@ -37,3 +37,6 @@ class DatabaseHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDB") {
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
     }
 }
+
+val Context.database: DatabaseHelper
+    get() = DatabaseHelper.getInstance(applicationContext)

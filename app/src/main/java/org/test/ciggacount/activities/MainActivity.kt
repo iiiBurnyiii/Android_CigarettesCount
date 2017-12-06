@@ -19,8 +19,8 @@ import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import org.test.ciggacount.R
-import org.test.ciggacount.utils.DatabaseHelper
 import org.test.ciggacount.utils.MySharedPreferences
+import org.test.ciggacount.utils.database
 import org.test.ciggacount.widget.CigaretteWidget
 import java.text.DateFormat
 import java.util.*
@@ -43,9 +43,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var price: String
     private var curDate =  Calendar.getInstance().timeInMillis
     private var curDay: Int? = null
-
-    private val Context.database : DatabaseHelper
-        get() = DatabaseHelper.getInstance(applicationContext)
 
     private val sp = MySharedPreferences(this)
 
@@ -129,7 +126,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         curDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
 
         if (curDay.toString() != sp.getPref("day")) {
-            databaseInsertCount()
+            databaseInsertCount(this)
         }
     }
 
@@ -162,12 +159,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         etPrice.text.clear()
     }
 
-    private fun databaseInsertCount() {
+    private fun databaseInsertCount(context: Context) {
         val date = DateFormat
                 .getDateInstance(DateFormat.LONG)
                 .format(curDate)
 
-        database.use {
+        context.database.use {
             insert("Counter",
                     "count" to sp.getPref("count").toInt(),
                     "date" to date)
