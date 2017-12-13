@@ -17,6 +17,10 @@ import org.test.ciggacount.adapters.HistoryAdapter
 
 class PlaceholderFragment : Fragment() {
 
+    lateinit var packName: EditText
+    lateinit var packPrice: EditText
+    lateinit var count: EditText
+
     companion object {
         private val ARG_SECTION_ROLE = "section_role"
 
@@ -49,7 +53,7 @@ class PlaceholderFragment : Fragment() {
         lv.choiceMode = ListView.CHOICE_MODE_MULTIPLE_MODAL
         lv.setMultiChoiceModeListener( object : AbsListView.MultiChoiceModeListener {
 
-            val itemsList: ArraySet<Long> = ArraySet()
+            val selectedItemsList: ArraySet<Long> = ArraySet()
 
             override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
                 mode?.menuInflater?.inflate(R.menu.context_menu_history, menu)
@@ -85,14 +89,12 @@ class PlaceholderFragment : Fragment() {
 
                 when (checked) {
                     true -> {
-                        itemsList.add(id)
+                        selectedItemsList.add(id)
                         mode?.invalidate()
-                        Log.d("myLogs", "Элемент из $table с id: $id был добавлен в список, список: $itemsList")
                     }
                     false -> {
-                        itemsList.remove(id)
+                        selectedItemsList.remove(id)
                         mode?.invalidate()
-                        Log.d("myLogs", "Элемент из $table с id: $id был удален из списка, список: $itemsList")
                     }
                 }
             }
@@ -113,85 +115,74 @@ class PlaceholderFragment : Fragment() {
             }
 
             private fun deleteSelectedItems() {
-                for (item in itemsList) {
+                for (item in selectedItemsList) {
                     adapter.deleteItem(item)
                     Log.d("myLogs", "Элемент $item был удалён")
                 }
-                itemsList.clear()
+                selectedItemsList.clear()
             }
 
             private fun updateCount(count: String) {
-                for (item in itemsList) {
+                for (item in selectedItemsList) {
                     adapter.updateCount(item, count)
                 }
-                itemsList.clear()
+                selectedItemsList.clear()
             }
 
             private fun updatePack(name: String, price: String) {
-                for (item in itemsList) {
+                for (item in selectedItemsList) {
                     adapter.updatePack(item, name, price)
                 }
-                itemsList.clear()
+                selectedItemsList.clear()
             }
 
             private fun setCountEditDialog() {
-                var etEditCount: EditText? = null
-
                 alert {
-                    title = "Редактировать количество выкуренных сигарет"
+                    titleResource = R.string.edit_count
 
                     customView {
                         verticalLayout {
-                            linearLayout {
-                                etEditCount = editText {
-                                    hint = "Сколько выкурил"
+                            padding = dip(24)
 
-                                    inputType = android.text.InputType.TYPE_CLASS_NUMBER
-                                }.lparams(width = matchParent, height = wrapContent) {
-                                    bottom = dip(15)
-                                }
-                            }.lparams(width = matchParent, height = wrapContent)
+                            count = editText {
+                                hintResource = R.string.hint_count
+                                inputType = android.text.InputType.TYPE_CLASS_NUMBER
+                            }
                         }
                     }
 
-                    yesButton { updateCount(etEditCount?.text.toString()) }
-                    noButton { itemsList.clear() }
+                    yesButton { updateCount(
+                            count = count.text.toString()
+                    ) }
+                    noButton { selectedItemsList.clear() }
                 }.show()
             }
 
             private fun setPackEditDialog() {
-                var etEditName: EditText? = null
-                var etEditPrice: EditText? = null
-
                 alert {
-                    title = "Редактировать купленную пачку"
+                    titleResource = R.string.edit_pack
 
                     customView {
                         verticalLayout {
-                            linearLayout {
-                                etEditName = editText {
-                                    hint = "Марка"
+                            padding = dip(24)
 
-                                    inputType = android.text.InputType.TYPE_CLASS_TEXT
-                                }.lparams(width = matchParent, height = wrapContent) {
-                                    bottom = dip(15)
-                                }
-                            }.lparams(width = matchParent, height = wrapContent)
+                            packName = editText {
+                                hintResource = R.string.pack_name
+                                inputType = android.text.InputType.TYPE_CLASS_TEXT
+                            }
 
-                            linearLayout {
-                                etEditPrice = editText {
-                                    hint = "Цена"
-
-                                    inputType = android.text.InputType.TYPE_CLASS_NUMBER
-                                }.lparams(width = matchParent, height = wrapContent) {
-                                    bottom = dip(15)
-                                }
-                            }.lparams(width = matchParent, height = wrapContent)
+                            packPrice = editText {
+                                hintResource = R.string.pack_price
+                                inputType = android.text.InputType.TYPE_CLASS_NUMBER
+                            }
                         }
                     }
-                    yesButton { updatePack(etEditName?.text.toString(),
-                            etEditPrice?.text.toString()) }
-                    noButton { itemsList.clear() }
+
+                    yesButton { updatePack(
+                            name = packName.text.toString(),
+                            price = packPrice.text.toString()
+                    ) }
+                    noButton { selectedItemsList.clear() }
                 }.show()
             }
         })

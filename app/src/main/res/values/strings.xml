@@ -16,17 +16,23 @@
     <string name="count_text">0</string>
     <string name="main_title_count">Че сколько выкурил, братишь?</string>
 
-    <string name="main_pack_name">Марка</string>
-    <string name="main_pack_price">Цена</string>
-    <string name="main_title_pack">Что купил?</string>
+    <string name="pack_name">Марка</string>
+    <string name="pack_price">Цена</string>
+    <string name="add_pack">Добавить новую пачку сигарет</string>
+    <string name="edit_pack">Редактировать пачку сигарет</string>
+    <string name="edit_count">Редактировать количество выкуренных сигарет</string>
+    <string name="hint_count">Количество</string>
 
-    <string name="add_pack">Добавить</string>
     <string name="statistic">Статистика</string>
     <string name="methods">Методы</string>
+
+    <string name="dialog_positive">Готово</string>
+    <string name="dialog_negative">Отмена</string>
 
     <string name="menu_history_1">Удалить всю историю</string>
 
     <string name="context_menu_history_1">Edit item</string>
     <string name="context_menu_history_2">Delete item</string>
     <string name="context_menu_history_3">Select All</string>
+
 </resources>

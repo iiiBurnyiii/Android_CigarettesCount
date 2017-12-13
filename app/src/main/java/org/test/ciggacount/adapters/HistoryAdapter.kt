@@ -6,10 +6,12 @@ import android.widget.BaseAdapter
 import org.jetbrains.anko.*
 import org.test.ciggacount.R
 import org.test.ciggacount.activities.HistoryActivity
+import org.test.ciggacount.utils.DatabaseManager
 
-class HistoryAdapter(private val activity: HistoryActivity, private val table: String) : BaseAdapter() {
+class HistoryAdapter(activity: HistoryActivity, private val table: String) : BaseAdapter() {
 
-    private var list: List<Map<String, Any?>> = activity.getDataFromProvider(table)
+    private val dbManager = DatabaseManager(activity)
+    private var list: List<Map<String, Any?>> = dbManager.getDataFromProvider(table)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val item = getItem(position)
@@ -42,22 +44,22 @@ class HistoryAdapter(private val activity: HistoryActivity, private val table: S
     override fun getCount(): Int = list.size
 
     private fun rebuild() {
-        list = activity.getDataFromProvider(table)
+        list = dbManager.getDataFromProvider(table)
         notifyDataSetChanged()
     }
 
     fun deleteItem(id: Long) {
-        activity.deleteItemWithId(id, table)
+        dbManager.deleteItemWithId(id, table)
         rebuild()
     }
 
     fun updateCount(id: Long, count: String) {
-        activity.updateCountWithId(id, count)
+        dbManager.updateCountWithId(id, count)
         rebuild()
     }
 
     fun updatePack(id: Long, name: String, price: String) {
-        activity.updatePackWithId(id, name, price)
+        dbManager.updatePackWithId(id, name, price)
         rebuild()
     }
 

@@ -2,15 +2,14 @@ package org.test.ciggacount.utils
 
 import android.content.Context
 
-class MySharedPreferences(private val context: Context) {
+class MySharedPreferences(private val ctx: Context) {
 
     companion object {
-
-        val WIDGET_PREF = "widget_pref"
+        val APP_PREF = "app_pref"
     }
 
     fun setPref(key: String, value: Any?) {
-        context.getSharedPreferences(MySharedPreferences.WIDGET_PREF, Context.MODE_PRIVATE)
+        ctx.getSharedPreferences(MySharedPreferences.APP_PREF, Context.MODE_PRIVATE)
                 .edit()
                 .putString(key, value.toString())
                 .apply()
@@ -18,7 +17,7 @@ class MySharedPreferences(private val context: Context) {
     }
 
     fun getPref(key: String): String {
-        return context.getSharedPreferences(MySharedPreferences.WIDGET_PREF, Context.MODE_PRIVATE)
+        return ctx.getSharedPreferences(MySharedPreferences.APP_PREF, Context.MODE_PRIVATE)
                 .getString(key, "0")
     }
 }

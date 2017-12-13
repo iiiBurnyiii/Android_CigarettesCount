@@ -26,7 +26,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.test.ciggacount.activities.MainActivity" />
         </activity>
-        <activity android:name=".widget.ConfigActivity" />
 
         <receiver android:name=".widget.CigaretteWidget">
             <intent-filter>

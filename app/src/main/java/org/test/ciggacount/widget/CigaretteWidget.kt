@@ -8,6 +8,9 @@ import android.content.Intent
 import android.widget.RemoteViews
 import org.test.ciggacount.R
 import org.test.ciggacount.activities.MainActivity
+import org.test.ciggacount.logic.Count.Companion.countPlus
+import org.test.ciggacount.logic.Count.Companion.countSub
+import org.test.ciggacount.logic.Count.Companion.insertCountIfNextDay
 import org.test.ciggacount.utils.MySharedPreferences
 
 class CigaretteWidget : AppWidgetProvider() {
@@ -37,9 +40,10 @@ class CigaretteWidget : AppWidgetProvider() {
             if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
                 val sp = MySharedPreferences(context)
 
+                insertCountIfNextDay(context)
                 val count = when (intent.action) {
-                    ACTION_PLUS -> sp.getPref("count").toInt() + 1
-                    ACTION_SUB -> MainActivity.subCount(sp.getPref("count").toInt())
+                    ACTION_PLUS -> countPlus(sp.getPref("count").toInt())
+                    ACTION_SUB -> countSub(sp.getPref("count").toInt())
                     else -> sp.getPref("count").toInt()
                 }
                 sp.setPref("count", count)
